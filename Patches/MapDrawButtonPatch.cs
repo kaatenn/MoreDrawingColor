@@ -2,13 +2,15 @@ using Godot;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Nodes.Screens.Map;
 using MegaCrit.Sts2.Core.Logging;
-using MegaCrit.Sts2.Core.Multiplayer.Game;
 
 namespace MoreDrawingColor.Patches;
 
 [HarmonyPatch(typeof(NMapDrawButton), "_Ready")]
 public class MapDrawButtonPatch
 {
+
+    private const string IconPath = "res://icons/color_picker.svg";
+
     static void Postfix(NMapDrawButton __instance)
     {
         Log.Debug("[MapDrawButtonPatch] _Ready Postfix called!");
@@ -42,13 +44,40 @@ public class MapDrawButtonPatch
     private static Control CreateColorPickerButton()
     {
         const int btnSize = 60;
+        const int iconSize = 40;  // 图标大小
 
         var button = new Button
         {
-            Text = "🎨",
             CustomMinimumSize = new Vector2(btnSize, btnSize),
             TooltipText = "打开调色盘"
         };
+
+        var iconTexture = GD.Load<Texture2D>(IconPath);
+        if (iconTexture != null)
+        {
+            // 创建容器来居中图标
+            var container = new CenterContainer
+            {
+                CustomMinimumSize = new Vector2(btnSize, btnSize)
+            };
+
+            var iconRect = new TextureRect
+            {
+                Texture = iconTexture,
+                CustomMinimumSize = new Vector2(iconSize, iconSize),
+                ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
+                StretchMode = TextureRect.StretchModeEnum.Scale
+            };
+
+            container.AddChild(iconRect);
+            button.Flat = true;
+            button.AddChild(container);
+        }
+        else
+        {
+            button.Text = "🎨";
+            Log.Warn("[MapDrawButtonPatch] Failed to load color_picker_icon.svg, using emoji fallback");
+        }
 
         button.Pressed += () =>
         {
