@@ -1,0 +1,52 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Godot auto-generated files
+*.uid
+*.import
+*.csproj
+
+# C# / .NET build outputs
+bin/
+obj/
+*.sln
+*.user
+*.lock.json
+
+# Build directories
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+
+# Rider
+.idea/
+*.sln.iml
+
+# Visual Studio
+.vs/
+*.vsidx
+*.suo
+*.userosscache
+*.sln.docstates
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Project specific
+refer/
+探索结果/
+
+# Logs
+*.log
